@@ -1,6 +1,8 @@
 package com.udacity.gradle.builditbigger;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Pair;
 import android.widget.Toast;
@@ -13,12 +15,17 @@ import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
 
 import java.io.IOException;
 
-class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
+class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     private static MyApi myApiService = null;
-    private Context context;
+//    private Context context;
+    private MainActivity activity;
+
+    public EndpointsAsyncTask(MainActivity activity) {
+        this.activity = activity;
+    }
 
     @Override
-    protected String doInBackground(Pair<Context, String>... params) {
+    protected String doInBackground(Void... voids) {
         if(myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -37,8 +44,8 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
             myApiService = builder.build();
         }
 
-        context = params[0].first;
-        String name = params[0].second;
+//        context = params[0].first;
+//        String name = params[0].second;
 
         try {
 
@@ -48,8 +55,12 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
         }
     }
 
+
+
     @Override
     protected void onPostExecute(String result) {
-        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+        activity.newActivity(result);
+
     }
 }
