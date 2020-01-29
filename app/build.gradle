@@ -11,6 +11,14 @@ buildscript {
 }
 
 android {
+    signingConfigs {
+        newsigningcoonfig {
+            storeFile file('/Users/jimzhang/Documents/00 cloud/android_key_store')
+            storePassword 'password'
+            keyAlias = 'udacity'
+            keyPassword 'password'
+        }
+    }
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
 
@@ -31,17 +39,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    flavorDimensions "version"
-//    productFlavors{
-//        free{
-//            dimension "version"
-//            applicationIdSuffix ".free"
-//        }
-//        paid{
-//            dimension "version"
-//            applicationIdSuffix ".paid"
-//        }
-//    }
+    flavorDimensions 'release'
+    productFlavors {
+        free {
+
+
+            applicationIdSuffix = '.free'
+        }
+        paid {
+            dimension = 'release'
+            applicationIdSuffix = '.paid'
+        }
+
+    }
+
 }
 
 dependencies {
