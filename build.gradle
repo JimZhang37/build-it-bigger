@@ -20,3 +20,45 @@ allprojects {
         google()
     }
 }
+
+task runIntegrationTest {
+    group = "integration test"
+    description = "run an integration test from end to end"
+    dependsOn = ["startBackendServer", "stopBackendServer", "runUiTest"]
+    doLast {
+        println "run an integration test from end to end"
+    }
+}
+
+task startBackendServer {
+    group = "integration test"
+    description = "start app engine as backend server"
+    dependsOn ':backend:appengineRun'
+    evaluationDependsOn(":backend")
+    doLast {
+        println "start app engine as backend server"
+    }
+
+}
+
+task stopBackendServer {
+    group = "integration test"
+    description = "stop app engine as backend server"
+    dependsOn ':backend:appengineStop'
+    mustRunAfter "runUiTest"
+    doLast {
+        println "stop app engine as backend server"
+    }
+}
+
+task runUiTest {
+    dependsOn ':app:connectedAndroidTest'
+    mustRunAfter "startBackendServer"
+    finalizedBy "stopBackendServer"
+    group = "integration test"
+    description = "in the UI test, the MainActivity's button is clicked, leading to fetch a joke from backend server and start a new activity with the joke"
+
+    doLast {
+        println "in the UI test, the MainActivity's button is clicked, leading to fetch a joke from backend server and start a new activity with the joke"
+    }
+}
